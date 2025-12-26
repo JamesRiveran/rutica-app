@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, Button } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { getMyProfile } from '@/services/profiles';
-import { router } from 'expo-router';
 
 export default function ProfileScreen() {
   const [profile, setProfile] = useState<any>(null);
@@ -16,7 +15,7 @@ export default function ProfileScreen() {
       const data = await getMyProfile();
       setProfile(data);
     } catch (e) {
-      console.error('[PROFILE] Error cargando perfil', e);
+      console.error('[PROFILE]', e);
     } finally {
       setLoading(false);
     }
@@ -30,14 +29,6 @@ export default function ProfileScreen() {
     );
   }
 
-  if (!profile) {
-    return (
-      <View style={{ padding: 24 }}>
-        <Text>No se pudo cargar el perfil</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={{ flex: 1, padding: 24 }}>
       <Text style={{ fontSize: 22, marginBottom: 16 }}>
@@ -47,11 +38,6 @@ export default function ProfileScreen() {
       <Text>Nombre: {profile.full_name_prf}</Text>
       <Text>Teléfono: {profile.phone_number_prf ?? 'No registrado'}</Text>
       <Text>Rol: {profile.role_prf}</Text>
-      <Text>Activo: {profile.is_active_prf ? 'Sí' : 'No'}</Text>
-
-      <View style={{ marginTop: 24 }}>
-        <Button title="Volver" onPress={() => router.back()} />
-      </View>
     </View>
   );
 }

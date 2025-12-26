@@ -27,7 +27,7 @@ export default function LoginScreen() {
       await signIn(email, password);
 
       // 👉 login exitoso
-      router.replace('/(app)/home');
+      router.replace('/(app)/(tabs)/home');
     } catch (error: any) {
       Alert.alert(
         'Error al iniciar sesión',
