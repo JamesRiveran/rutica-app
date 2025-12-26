@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { signUp } from '@/services/auth';
+import { Link } from 'expo-router';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');
@@ -136,6 +137,19 @@ export default function RegisterScreen() {
           disabled={loading}
         />
       </View>
+
+      <View style={{ marginTop: 20, alignItems: 'center' }}>
+        <Text style={{ color: '#666' }}>
+          ¿Ya tenés cuenta?
+        </Text>
+
+        <Link href="/(auth)/login">
+          <Text style={{ color: '#007AFF', marginTop: 4 }}>
+            Iniciar sesión
+          </Text>
+        </Link>
+      </View>
+
     </View>
   );
 }
