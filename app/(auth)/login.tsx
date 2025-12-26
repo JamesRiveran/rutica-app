@@ -1,15 +1,14 @@
+import { signIn } from '@/services/auth';
+import { Link, router } from 'expo-router';
 import { useState } from 'react';
 import {
-  View,
+  Alert,
+  Button,
+  StyleSheet,
   Text,
   TextInput,
-  Button,
-  Alert,
-  StyleSheet,
+  View,
 } from 'react-native';
-import { signIn } from '@/services/auth';
-import { router } from 'expo-router';
-import { Link } from 'expo-router';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -28,7 +27,7 @@ export default function LoginScreen() {
       await signIn(email, password);
 
       // 👉 login exitoso
-      router.replace('/welcome');
+      router.replace('/(app)/home');
     } catch (error: any) {
       Alert.alert(
         'Error al iniciar sesión',
