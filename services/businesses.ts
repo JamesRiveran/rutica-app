@@ -59,3 +59,37 @@ export async function createBusiness(input: CreateBusinessInput) {
 
   if (businessError) throw businessError;
 }
+
+export async function getAllBusinesses() {
+  const { data, error } = await supabase
+    .from('businesses')
+    .select(`
+      id_bus,
+      name_bus,
+      description_bus,
+      moderation_status_bus,
+      is_active_bus
+    `)
+    .neq('moderation_status_bus', 'rejected')
+    .order('created_at_bus', { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
+
+export async function getBusinessesByOwner(ownerId: string) {
+  const { data, error } = await supabase
+    .from('businesses')
+    .select(`
+      id_bus,
+      name_bus,
+      description_bus,
+      moderation_status_bus,
+      is_active_bus
+    `)
+    .eq('owner_id_bus', ownerId)
+    .order('created_at_bus', { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
