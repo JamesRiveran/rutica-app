@@ -341,3 +341,51 @@ FOR EACH ROW
 EXECUTE FUNCTION public.handle_new_user();
 
 NOTIFY pgrst, 'reload schema';
+
+-- Asegurar extensión para UUID
+create extension if not exists "pgcrypto";
+
+-- Agregar valor por defecto al id_LOC
+alter table locations
+alter column id_LOC
+set default gen_random_uuid();
+
+-- Asegurar extensión
+create extension if not exists "pgcrypto";
+
+-- Generar UUID automáticamente
+alter table businesses
+alter column id_BUS
+set default gen_random_uuid();
+
+
+DROP POLICY IF EXISTS "Only verified users can create businesses" ON businesses;
+
+CREATE POLICY "Only verified users can create businesses"
+ON businesses
+FOR INSERT
+WITH CHECK (
+  auth.uid() IS NOT NULL
+  AND (
+    SELECT email_confirmed_at
+    FROM auth.users
+    WHERE id = auth.uid()
+  ) IS NOT NULL
+);
+ALTER TABLE businesses ENABLE ROW LEVEL SECURITY;
+
+
+DROP POLICY IF EXISTS "Only verified users can create locations" ON locations;
+
+CREATE POLICY "Only verified users can create locations"
+ON locations
+FOR INSERT
+WITH CHECK (
+  auth.uid() IS NOT NULL
+  AND (
+    SELECT email_confirmed_at
+    FROM auth.users
+    WHERE id = auth.uid()
+  ) IS NOT NULL
+);
+ALTER TABLE locations ENABLE ROW LEVEL SECURITY;
