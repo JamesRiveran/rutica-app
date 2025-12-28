@@ -1,19 +1,23 @@
 import { signIn } from '@/services/auth';
 import { Link, router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  Alert,
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
+    Alert,
+    Button,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from 'react-native';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log('[LOGIN] Pantalla de login montada');
+  }, []);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -22,13 +26,16 @@ export default function LoginScreen() {
     }
 
     setLoading(true);
+    console.log('[LOGIN] Intentando login...');
 
     try {
       await signIn(email, password);
 
       // 👉 login exitoso
+      console.log('[LOGIN] Login exitoso');
       router.replace('/(app)/(tabs)/home');
     } catch (error: any) {
+      console.error('[LOGIN] Error:', error);
       Alert.alert(
         'Error al iniciar sesión',
         error?.message ?? 'Credenciales incorrectas'
