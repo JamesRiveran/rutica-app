@@ -1,8 +1,9 @@
 import { Tabs } from 'expo-router';
 import {
-  Home,
-  Store,
-  User,
+    Home,
+    Map,
+    Store,
+    User,
 } from 'lucide-react-native';
 
 export default function TabsLayout() {
@@ -34,6 +35,16 @@ export default function TabsLayout() {
           title: 'Comercios',
           tabBarIcon: ({ color, size }) => (
             <Store color={color} size={size} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="maps"
+        options={{
+          title: 'Mapa',
+          tabBarIcon: ({ color, size }) => (
+            <Map color={color} size={size} />
           ),
         }}
       />

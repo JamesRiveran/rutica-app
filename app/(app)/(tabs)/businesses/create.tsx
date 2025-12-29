@@ -1,16 +1,18 @@
-import { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  Alert,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
-import { router } from 'expo-router';
+import LocationPicker from '@/components/location-picker';
 import { supabase } from '@/lib/supabase';
 import { createBusiness } from '@/services/businesses';
+import { updateUserRole } from '@/services/profiles';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import {
+    Alert,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+} from 'react-native';
 
 export default function CreateBusinessScreen() {
   // Business
@@ -29,8 +31,8 @@ export default function CreateBusinessScreen() {
   const [canton, setCanton] = useState('');
   const [district, setDistrict] = useState('');
   const [address, setAddress] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +45,7 @@ export default function CreateBusinessScreen() {
     if (!latitude || !longitude) {
       Alert.alert(
         'Ubicación requerida',
-        'Debes ingresar latitud y longitud'
+        'Debes seleccionar la ubicación en el mapa'
       );
       return;
     }
@@ -85,13 +87,24 @@ export default function CreateBusinessScreen() {
         canton: canton.trim() || undefined,
         district: district.trim() || undefined,
         address: address.trim() || undefined,
-        latitude: Number(latitude),
-        longitude: Number(longitude),
+        latitude: latitude,
+        longitude: longitude,
       });
+
+      // Actualizar rol a seller si es buyer
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role_prf')
+        .eq('id_prf', data.user.id)
+        .single();
+
+      if (profile && profile.role_prf === 'buyer') {
+        await updateUserRole(data.user.id, 'seller');
+      }
 
       Alert.alert(
         'Comercio registrado',
-        'Tu comercio fue enviado para revisión.'
+        'Tu comercio fue enviado para revisión. ¡Ahora eres vendedor!'
       );
 
       router.back();
@@ -157,18 +170,32 @@ export default function CreateBusinessScreen() {
         <Input label="Cantón" value={canton} onChangeText={setCanton} />
         <Input label="Distrito" value={district} onChangeText={setDistrict} />
         <Input label="Dirección" value={address} onChangeText={setAddress} />
-        <Input
-          label="Latitud *"
-          value={latitude}
-          onChangeText={setLatitude}
-          keyboardType="numeric"
+        
+        <Text style={styles.mapLabel}>Ubicación en el mapa *</Text>
+        <LocationPicker
+          initialLatitude={latitude || undefined}
+          initialLongitude={longitude || undefined}
+          onLocationSelect={(data) => {
+            setLatitude(data.latitude);
+            setLongitude(data.longitude);
+            
+            // Llenar campos automáticamente si están vacíos
+            if (data.country && !country) setCountry(data.country);
+            if (data.province && !province) setProvince(data.province);
+            if (data.canton && !canton) setCanton(data.canton);
+            if (data.district && !district) setDistrict(data.district);
+            if (data.address && !address) setAddress(data.address);
+          }}
+          height={350}
         />
-        <Input
-          label="Longitud *"
-          value={longitude}
-          onChangeText={setLongitude}
-          keyboardType="numeric"
-        />
+
+        {latitude && longitude && (
+          <View style={styles.selectedCoordinates}>
+            <Text style={styles.coordSelectedText}>
+              ✓ Ubicación seleccionada: {latitude.toFixed(6)}, {longitude.toFixed(6)}
+            </Text>
+          </View>
+        )}
       </Section>
 
       <Pressable
@@ -257,5 +284,25 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  mapLabel: {
+    fontSize: 13,
+    marginBottom: 8,
+    marginTop: 4,
+    color: '#333',
+    fontWeight: '500',
+  },
+  selectedCoordinates: {
+    marginTop: 8,
+    padding: 10,
+    backgroundColor: '#d1fae5',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#10b981',
+  },
+  coordSelectedText: {
+    fontSize: 12,
+    color: '#065f46',
+    fontWeight: '500',
   },
 }); 

@@ -1,15 +1,15 @@
+import { signUp } from '@/services/auth';
+import { Picker } from '@react-native-picker/picker';
+import { Link } from 'expo-router';
 import { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  Alert,
-  StyleSheet,
+    Alert,
+    Button,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { signUp } from '@/services/auth';
-import { Link } from 'expo-router';
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState('');

@@ -1,13 +1,13 @@
 import { supabase } from '@/lib/supabase';
 import { getBusinessesByOwner } from '@/services/businesses';
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
+    FlatList,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
 
 export default function BusinessesScreen() {
@@ -15,9 +15,12 @@ export default function BusinessesScreen() {
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  // Recargar datos cada vez que la pantalla se enfoca
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [])
+  );
 
   const loadData = async () => {
     try {
@@ -34,7 +37,7 @@ export default function BusinessesScreen() {
 
       setRole(profile.role_prf);
 
-      if (profile.role_prf === 'seller') {
+      if (profile.role_prf === 'seller' || profile.role_prf === 'admin') {
         const data = await getBusinessesByOwner(auth.user.id);
         setBusinesses(data ?? []);
       }
@@ -49,10 +52,38 @@ export default function BusinessesScreen() {
     return <Text style={styles.loading}>Cargando…</Text>;
   }
 
-  if (role !== 'seller') {
+  // Usuario comprador (buyer) - mostrar botón para crear primer comercio
+  if (role === 'buyer') {
     return (
       <View style={styles.center}>
-        <Text>No tienes comercios registrados</Text>
+        <Text style={styles.emptyTitle}>¡Conviértete en vendedor!</Text>
+        <Text style={styles.emptySubtitle}>
+          Registra tu primer comercio o emprendimiento
+        </Text>
+        <Pressable
+          style={styles.createButtonCentered}
+          onPress={() => router.push('/(app)/(tabs)/businesses/create')}
+        >
+          <Text style={styles.createText}>+ Registrar mi comercio</Text>
+        </Pressable>
+      </View>
+    );
+  }
+
+  // Usuario seller/admin sin comercios
+  if (businesses.length === 0) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.emptyTitle}>No tienes comercios aún</Text>
+        <Text style={styles.emptySubtitle}>
+          Registra tu primer comercio
+        </Text>
+        <Pressable
+          style={styles.createButtonCentered}
+          onPress={() => router.push('/(app)/(tabs)/businesses/create')}
+        >
+          <Text style={styles.createText}>+ Registrar comercio</Text>
+        </Pressable>
       </View>
     );
   }
@@ -99,6 +130,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 24,
+  },
+  emptyTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  emptySubtitle: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 24,
+    textAlign: 'center',
   },
   card: {
     backgroundColor: '#fff',
@@ -125,6 +169,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     borderRadius: 10,
     alignItems: 'center',
+  },
+  createButtonCentered: {
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    backgroundColor: '#007AFF',
+    borderRadius: 10,
+    alignItems: 'center',
+    minWidth: 200,
   },
   createText: {
     color: '#fff',

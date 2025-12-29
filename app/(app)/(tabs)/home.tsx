@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { getAllBusinesses } from '@/services/businesses';
+import { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 export default function HomeScreen() {
   const [businesses, setBusinesses] = useState<any[]>([]);
