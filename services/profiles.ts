@@ -9,3 +9,12 @@ export async function getMyProfile() {
   if (error) throw error;
   return data;
 }
+
+export async function updateUserRole(userId: string, role: 'buyer' | 'seller' | 'admin') {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ role_prf: role })
+    .eq('id_prf', userId);
+
+  if (error) throw error;
+}
