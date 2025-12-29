@@ -3,11 +3,11 @@ import { getBusinessesByOwner } from '@/services/businesses';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
+    FlatList,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
 
 export default function BusinessesScreen() {

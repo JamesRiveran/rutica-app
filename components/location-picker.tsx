@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import * as Location from 'expo-location';
+import { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  Pressable,
-  ActivityIndicator,
-  Alert,
+    ActivityIndicator,
+    Alert,
+    Platform,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import * as Location from 'expo-location';
 
 interface LocationData {
   latitude: number;

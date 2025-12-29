@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  Alert,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
-import { router } from 'expo-router';
+import LocationPicker from '@/components/location-picker';
 import { supabase } from '@/lib/supabase';
 import { createBusiness } from '@/services/businesses';
 import { updateUserRole } from '@/services/profiles';
-import LocationPicker from '@/components/location-picker';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import {
+    Alert,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+} from 'react-native';
 
 export default function CreateBusinessScreen() {
   // Business
