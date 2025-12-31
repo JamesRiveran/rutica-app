@@ -1,11 +1,13 @@
-import LocationPicker from '@/components/location-picker';
+import LocationPicker from '@/components/forms/location-picker';
 import { supabase } from '@/lib/supabase';
 import { createBusiness } from '@/services/businesses';
 import { updateUserRole } from '@/services/profiles';
 import { router } from 'expo-router';
+import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import {
     Alert,
+    Image,
     Pressable,
     ScrollView,
     StyleSheet,
@@ -34,7 +36,49 @@ export default function CreateBusinessScreen() {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
 
+  // Images
+  const [logoUri, setLogoUri] = useState<string | null>(null);
+  const [businessImages, setBusinessImages] = useState<string[]>([]);
+
   const [loading, setLoading] = useState(false);
+
+  const pickLogo = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (!result.canceled) {
+        setLogoUri(result.assets[0].uri);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'No se pudo seleccionar la imagen');
+    }
+  };
+
+  const pickBusinessImages = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsMultiple: true,
+        quality: 0.8,
+      });
+
+      if (!result.canceled) {
+        const newImages = result.assets.map((asset) => asset.uri);
+        setBusinessImages([...businessImages, ...newImages]);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'No se pudo seleccionar las imágenes');
+    }
+  };
+
+  const removeBusinessImage = (index: number) => {
+    setBusinessImages(businessImages.filter((_, i) => i !== index));
+  };
 
   const handleCreate = async () => {
     if (!name.trim()) {
@@ -89,6 +133,10 @@ export default function CreateBusinessScreen() {
         address: address.trim() || undefined,
         latitude: latitude,
         longitude: longitude,
+
+        // Images
+        logoUri: logoUri || undefined,
+        imageUris: businessImages.length > 0 ? businessImages : undefined,
       });
 
       // Actualizar rol a seller si es buyer
@@ -198,6 +246,63 @@ export default function CreateBusinessScreen() {
         )}
       </Section>
 
+      {/* IMAGES */}
+      <Section title="Imágenes">
+        {/* Logo */}
+        <View style={styles.imageSection}>
+          <Text style={styles.label}>Logo del comercio</Text>
+          {logoUri && (
+            <View style={styles.logoPreview}>
+              <Image
+                source={{ uri: logoUri }}
+                style={styles.logoImage}
+              />
+              <Pressable
+                style={styles.removeButton}
+                onPress={() => setLogoUri(null)}
+              >
+                <Text style={styles.removeButtonText}>✕</Text>
+              </Pressable>
+            </View>
+          )}
+          <Pressable style={styles.pickButton} onPress={pickLogo}>
+            <Text style={styles.pickButtonText}>
+              {logoUri ? '📷 Cambiar logo' : '📷 Seleccionar logo'}
+            </Text>
+          </Pressable>
+        </View>
+
+        {/* Imágenes del negocio */}
+        <View style={[styles.imageSection, { marginTop: 16 }]}>
+          <Text style={styles.label}>Imágenes del negocio (galería)</Text>
+          {businessImages.length > 0 && (
+            <View style={styles.imagesGrid}>
+              {businessImages.map((uri, index) => (
+                <View key={index} style={styles.imageContainer}>
+                  <Image
+                    source={{ uri }}
+                    style={styles.galleryImage}
+                  />
+                  <Pressable
+                    style={styles.removeButton}
+                    onPress={() => removeBusinessImage(index)}
+                  >
+                    <Text style={styles.removeButtonText}>✕</Text>
+                  </Pressable>
+                </View>
+              ))}
+            </View>
+          )}
+          <Pressable style={styles.pickButton} onPress={pickBusinessImages}>
+            <Text style={styles.pickButtonText}>
+              {businessImages.length > 0
+                ? `📸 Agregar más imágenes (${businessImages.length})`
+                : '📸 Seleccionar imágenes'}
+            </Text>
+          </Pressable>
+        </View>
+      </Section>
+
       <Pressable
         style={[styles.button, loading && styles.buttonDisabled]}
         onPress={handleCreate}
@@ -303,6 +408,66 @@ const styles = StyleSheet.create({
   coordSelectedText: {
     fontSize: 12,
     color: '#065f46',
+    fontWeight: '500',
+  },
+  imageSection: {
+    marginBottom: 14,
+  },
+  logoPreview: {
+    position: 'relative',
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+  logoImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 10,
+    backgroundColor: '#f0f0f0',
+  },
+  imagesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 12,
+  },
+  imageContainer: {
+    position: 'relative',
+    width: '48%',
+  },
+  galleryImage: {
+    width: '100%',
+    height: 120,
+    borderRadius: 10,
+    backgroundColor: '#f0f0f0',
+  },
+  removeButton: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: '#ff3b30',
+    borderRadius: 50,
+    width: 32,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  removeButtonText: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  pickButton: {
+    backgroundColor: '#e8e8e8',
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#d0d0d0',
+    borderStyle: 'dashed',
+  },
+  pickButtonText: {
+    color: '#666',
+    fontSize: 14,
     fontWeight: '500',
   },
 }); 

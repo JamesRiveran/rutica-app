@@ -358,6 +358,24 @@ alter table businesses
 alter column id_BUS
 set default gen_random_uuid();
 
+-- UUID por defecto para promociones y relaciones
+alter table promotions
+alter column id_PRM
+set default gen_random_uuid();
+
+alter table promotion_combo_items
+alter column id_PCI
+set default gen_random_uuid();
+
+-- Generar UUID automáticamente para productos e imágenes
+alter table products
+alter column id_PRD
+set default gen_random_uuid();
+
+alter table product_images
+alter column id_PIM
+set default gen_random_uuid();
+
 
 DROP POLICY IF EXISTS "Only verified users can create businesses" ON businesses;
 

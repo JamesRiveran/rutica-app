@@ -1,3 +1,4 @@
+import { getShadowStyle } from '@/utils/shadowHelper';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -210,11 +211,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     padding: 12,
     borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    ...getShadowStyle({
+      color: '#000',
+      offsetY: 2,
+      opacity: 0.25,
+      radius: 3.84,
+      elevation: 5,
+    }),
   },
   mobileInfoCard: {
     position: 'absolute',
@@ -224,11 +227,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     padding: 12,
     borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    ...getShadowStyle({
+      color: '#000',
+      offsetY: 2,
+      opacity: 0.25,
+      radius: 3.84,
+      elevation: 5,
+    }),
   },
   infoText: {
     fontSize: 14,

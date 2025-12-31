@@ -1,14 +1,47 @@
+import { supabase } from '@/lib/supabase';
 import { Tabs } from 'expo-router';
 import {
-    Home,
-    Map,
-    Store,
-    User,
+  BadgePercent,
+  Landmark,
+  Map,
+  Store,
+  Wrench,
 } from 'lucide-react-native';
+import { useEffect, useState } from 'react';
+
+type Role = 'buyer' | 'seller' | 'admin' | null;
 
 export default function TabsLayout() {
+  const [role, setRole] = useState<Role>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const { data: auth } = await supabase.auth.getUser();
+        const userId = auth.user?.id;
+        if (!userId) {
+          setRole(null);
+          return;
+        }
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role_prf')
+          .eq('id_prf', userId)
+          .single();
+        setRole(profile?.role_prf ?? null);
+      } catch (e) {
+        setRole(null);
+      }
+    };
+
+    load();
+  }, []);
+
+  const showManage = role === 'seller';
+
   return (
     <Tabs
+      initialRouteName="businesses"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#007AFF',
@@ -20,21 +53,31 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
-        options={{
-          title: 'Inicio',
-          tabBarIcon: ({ color, size }) => (
-            <Home color={color} size={size} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
         name="businesses"
         options={{
           title: 'Comercios',
           tabBarIcon: ({ color, size }) => (
             <Store color={color} size={size} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="attractions"
+        options={{
+          title: 'Atracciones',
+          tabBarIcon: ({ color, size }) => (
+            <Landmark color={color} size={size} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="promotions"
+        options={{
+          title: 'Promociones',
+          tabBarIcon: ({ color, size }) => (
+            <BadgePercent color={color} size={size} />
           ),
         }}
       />
@@ -49,12 +92,15 @@ export default function TabsLayout() {
         }}
       />
 
+      <Tabs.Screen name="products" options={{ href: null }} />
+
       <Tabs.Screen
-        name="profile"
+        name="manage"
         options={{
-          title: 'Perfil',
+          href: showManage ? undefined : null,
+          title: 'Gestionar',
           tabBarIcon: ({ color, size }) => (
-            <User color={color} size={size} />
+            <Wrench color={color} size={size} />
           ),
         }}
       />

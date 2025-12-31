@@ -33,7 +33,7 @@ export default function LoginScreen() {
 
       // 👉 login exitoso
       console.log('[LOGIN] Login exitoso');
-      router.replace('/(app)/(tabs)/home');
+      router.replace('/(app)/(tabs)/businesses');
     } catch (error: any) {
       console.error('[LOGIN] Error:', error);
       Alert.alert(

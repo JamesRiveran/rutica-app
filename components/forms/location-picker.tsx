@@ -1,3 +1,4 @@
+import { getShadowStyle } from '@/utils/shadowHelper';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import {
@@ -367,11 +368,13 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 6,
     zIndex: 1000,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
+    ...getShadowStyle({
+      color: '#000',
+      offsetY: 2,
+      opacity: 0.2,
+      radius: 4,
+      elevation: 3,
+    }),
   },
   coordText: {
     fontSize: 12,
