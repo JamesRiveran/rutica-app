@@ -63,7 +63,7 @@ export default function CreateBusinessScreen() {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        allowsMultiple: true,
+        allowsMultipleSelection: true,
         quality: 0.8,
       });
 
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 12,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#10b981',
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',

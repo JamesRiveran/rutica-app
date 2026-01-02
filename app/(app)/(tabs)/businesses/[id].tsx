@@ -122,248 +122,248 @@ export default function BusinessDetailScreen() {
 
     return (
         <>
-        <ScrollView style={styles.screen}>
-            {/* HERO */}
-            <View style={styles.heroWrapper}>
-                {image ? (
-                    <Image source={{ uri: image }} style={styles.hero} />
-                ) : (
-                    <View style={[styles.hero, styles.heroPlaceholder]} />
-                )}
-
-                <Pressable
-                    style={styles.backButton}
-                    onPress={() => router.replace('/(app)/(tabs)/businesses')}
-                >
-                    <Ionicons name="arrow-back" size={20} color="#111" />
-                    <Text style={styles.backText}>Volver</Text>
-                </Pressable>
-            </View>
-
-            {/* CONTENT */}
-            <View style={styles.contentCard}>
-                <View style={styles.headerRow}>
-                    {logo && (
-                        <View style={styles.logoContainer}>
-                            <Image source={{ uri: logo }} style={styles.logoImage} />
-                        </View>
+            <ScrollView style={styles.screen}>
+                {/* HERO */}
+                <View style={styles.heroWrapper}>
+                    {image ? (
+                        <Image source={{ uri: image }} style={styles.hero} />
+                    ) : (
+                        <View style={[styles.hero, styles.heroPlaceholder]} />
                     )}
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.title}>{business.name_bus}</Text>
 
-                        {categoryLabel && (
-                            <View style={styles.chip}>
-                                <Text style={styles.chipText}>{categoryLabel}</Text>
+                    <Pressable
+                        style={styles.backButton}
+                        onPress={() => router.replace('/(app)/(tabs)/businesses')}
+                    >
+                        <Ionicons name="arrow-back" size={20} color="#111" />
+                        <Text style={styles.backText}>Volver</Text>
+                    </Pressable>
+                </View>
+
+                {/* CONTENT */}
+                <View style={styles.contentCard}>
+                    <View style={styles.headerRow}>
+                        {logo && (
+                            <View style={styles.logoContainer}>
+                                <Image source={{ uri: logo }} style={styles.logoImage} />
                             </View>
                         )}
-                    </View>
+                        <View style={{ flex: 1 }}>
+                            <Text style={styles.title}>{business.name_bus}</Text>
 
-                    <View style={styles.ratingBox}>
-                        <Ionicons name="star" color="#F5A524" size={16} />
-                        <Text style={styles.ratingValue}>4.8</Text>
-                        <Text style={styles.ratingCount}>(24)</Text>
-                    </View>
-                </View>
-
-                {business.description_bus && (
-                    <Text style={styles.description}>{business.description_bus}</Text>
-                )}
-
-                {business.locations && (
-                    <View style={styles.locationRow}>
-                        <Ionicons name="location-sharp" size={16} color="#555" />
-                        <Text style={styles.locationText} numberOfLines={2}>
-                            {business.locations.district_loc}
-                            {business.locations.canton_loc
-                                ? `, ${business.locations.canton_loc}`
-                                : ''}
-                            {business.locations.province_loc
-                                ? `, ${business.locations.province_loc}`
-                                : ''}
-                        </Text>
-                        {mapsUrl && (
-                            <Pressable style={styles.mapButton} onPress={() => openUrl(mapsUrl)}>
-                                <Ionicons name="map" size={14} color="#0f172a" />
-                                <Text style={styles.mapButtonText}>Ver en mapa</Text>
-                            </Pressable>
-                        )}
-                    </View>
-                )}
-
-                {/* TABS (solo UI) */}
-                <View style={styles.tabsRow}>
-                    <View style={styles.tabActive}>
-                        <Text style={styles.tabActiveText}>
-                            Galería ({gallery.length})
-                        </Text>
-                    </View>
-                </View>
-
-                {/* GALERÍA DESDE SUPABASE */}
-                {gallery.length > 0 ? (
-                    <View style={styles.grid}>
-                        {gallery.map((img: any, idx: number) => (
-                            <View key={`${img.path_bim}-${idx}`} style={styles.cardBox}>
-                                <Image
-                                    source={{
-                                        uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${img.bucket_bim}/${img.path_bim}`,
-                                    }}
-                                    style={styles.galleryImage}
-                                />
-                            </View>
-                        ))}
-                    </View>
-                ) : (
-                    <Text style={styles.emptyGallery}>Sin imágenes adicionales</Text>
-                )}
-            </View>
-
-            {/* PRODUCTOS */}
-            {products.length > 0 && (
-                <View style={styles.productsCard}>
-                    <Text style={styles.productsTitle}>Productos ({products.length})</Text>
-                    <View style={styles.productsGrid}>
-                        {products.map((product: any) => {
-                            const productImage = product.product_images?.[0];
-                            const imageUrl = productImage
-                                ? `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${productImage.bucket_pim}/${productImage.path_pim}`
-                                : null;
-
-                            return (
-                                <Pressable 
-                                    key={product.id_prd} 
-                                    style={styles.productCard}
-                                    onPress={() => {
-                                        setSelectedProduct(product);
-                                        setShowProductModal(true);
-                                    }}
-                                >
-                                    {imageUrl ? (
-                                        <Image source={{ uri: imageUrl }} style={styles.productImage} />
-                                    ) : (
-                                        <View style={styles.productImagePlaceholder}>
-                                            <Ionicons name="image-outline" size={32} color="#999" />
-                                        </View>
-                                    )}
-                                    <View style={styles.productInfo}>
-                                        <Text style={styles.productName} numberOfLines={2}>
-                                            {product.name_prd}
-                                        </Text>
-                                        {product.description_prd && (
-                                            <Text style={styles.productDescription} numberOfLines={2}>
-                                                {product.description_prd}
-                                            </Text>
-                                        )}
-                                        <Text style={styles.productPrice}>
-                                            ₡{product.price_prd?.toLocaleString('es-CR') || '0'}
-                                        </Text>
-                                    </View>
-                                </Pressable>
-                            );
-                        })}
-                    </View>
-                </View>
-            )}
-
-            {/* CONTACT PANEL */}
-            <View style={styles.contactCard}>
-                <Text style={styles.contactTitle}>Contacto</Text>
-
-                {whatsappUrl && (
-                    <Pressable
-                        style={[styles.contactButton, styles.whatsapp]}
-                        onPress={() => openUrl(whatsappUrl)}
-                    >
-                        <Ionicons name="logo-whatsapp" size={18} color="#fff" />
-                        <Text style={styles.contactButtonText}>WhatsApp</Text>
-                    </Pressable>
-                )}
-
-                {phoneUrl && (
-                    <Pressable
-                        style={styles.contactButton}
-                        onPress={() => openUrl(phoneUrl)}
-                    >
-                        <Ionicons name="call" size={18} color="#111" />
-                        <Text style={styles.contactButtonDarkText}>Llamar</Text>
-                    </Pressable>
-                )}
-
-                {business.website_bus && (
-                    <Pressable
-                        style={styles.contactButton}
-                        onPress={() => openUrl(business.website_bus)}
-                    >
-                        <Ionicons name="link" size={18} color="#111" />
-                        <Text style={styles.contactButtonDarkText}>Sitio web</Text>
-                    </Pressable>
-                )}
-
-                {business.contact_email_bus && (
-                    <Pressable
-                        style={styles.contactButton}
-                        onPress={() => openUrl(`mailto:${business.contact_email_bus}`)}
-                    >
-                        <Ionicons name="mail" size={18} color="#111" />
-                        <Text style={styles.contactButtonDarkText}>Email</Text>
-                    </Pressable>
-                )}
-            </View>
-        </ScrollView>
-
-        {selectedProduct && (
-            <Modal
-                visible={showProductModal}
-                transparent
-                animationType="slide"
-                onRequestClose={() => setShowProductModal(false)}
-            >
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
-                        <View style={styles.modalHeader}>
-                            <Text style={styles.modalTitle} numberOfLines={2}>
-                                {selectedProduct.name_prd}
-                            </Text>
-                            <Pressable onPress={() => setShowProductModal(false)}>
-                                <Ionicons name="close" size={22} color="#111" />
-                            </Pressable>
-                        </View>
-
-                        <FlatList
-                            data={selectedProduct.product_images || []}
-                            keyExtractor={(item) => item.id_pim}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            style={styles.modalImageGallery}
-                            renderItem={({ item }) => {
-                                const imgUri = `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${item.bucket_pim}/${item.path_pim}`;
-                                return (
-                                    <Image
-                                        source={{ uri: imgUri }}
-                                        style={styles.modalProductImage}
-                                    />
-                                );
-                            }}
-                            ListEmptyComponent={(
-                                <View style={styles.modalPlaceholder}>
-                                    <Ionicons name="image-outline" size={32} color="#999" />
-                                    <Text style={styles.modalPlaceholderText}>Sin fotos</Text>
+                            {categoryLabel && (
+                                <View style={styles.chip}>
+                                    <Text style={styles.chipText}>{categoryLabel}</Text>
                                 </View>
                             )}
-                        />
+                        </View>
 
-                        <View style={styles.modalBody}>
-                            <Text style={styles.modalPrice}>
-                                ₡{selectedProduct.price_prd?.toLocaleString('es-CR') || '0'}
-                            </Text>
-                            {selectedProduct.description_prd ? (
-                                <Text style={styles.modalDescription}>{selectedProduct.description_prd}</Text>
-                            ) : null}
+                        <View style={styles.ratingBox}>
+                            <Ionicons name="star" color="#F5A524" size={16} />
+                            <Text style={styles.ratingValue}>4.8</Text>
+                            <Text style={styles.ratingCount}>(24)</Text>
                         </View>
                     </View>
+
+                    {business.description_bus && (
+                        <Text style={styles.description}>{business.description_bus}</Text>
+                    )}
+
+                    {business.locations && (
+                        <View style={styles.locationRow}>
+                            <Ionicons name="location-sharp" size={16} color="#555" />
+                            <Text style={styles.locationText} numberOfLines={2}>
+                                {business.locations.district_loc}
+                                {business.locations.canton_loc
+                                    ? `, ${business.locations.canton_loc}`
+                                    : ''}
+                                {business.locations.province_loc
+                                    ? `, ${business.locations.province_loc}`
+                                    : ''}
+                            </Text>
+                            {mapsUrl && (
+                                <Pressable style={styles.mapButton} onPress={() => openUrl(mapsUrl)}>
+                                    <Ionicons name="map" size={14} color="#0f172a" />
+                                    <Text style={styles.mapButtonText}>Ver en mapa</Text>
+                                </Pressable>
+                            )}
+                        </View>
+                    )}
+
+                    {/* TABS (solo UI) */}
+                    <View style={styles.tabsRow}>
+                        <View style={styles.tabActive}>
+                            <Text style={styles.tabActiveText}>
+                                Galería ({gallery.length})
+                            </Text>
+                        </View>
+                    </View>
+
+                    {/* GALERÍA DESDE SUPABASE */}
+                    {gallery.length > 0 ? (
+                        <View style={styles.grid}>
+                            {gallery.map((img: any, idx: number) => (
+                                <View key={`${img.path_bim}-${idx}`} style={styles.cardBox}>
+                                    <Image
+                                        source={{
+                                            uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${img.bucket_bim}/${img.path_bim}`,
+                                        }}
+                                        style={styles.galleryImage}
+                                    />
+                                </View>
+                            ))}
+                        </View>
+                    ) : (
+                        <Text style={styles.emptyGallery}>Sin imágenes adicionales</Text>
+                    )}
                 </View>
-            </Modal>
-        )}
+
+                {/* PRODUCTOS */}
+                {products.length > 0 && (
+                    <View style={styles.productsCard}>
+                        <Text style={styles.productsTitle}>Productos ({products.length})</Text>
+                        <View style={styles.productsGrid}>
+                            {products.map((product: any) => {
+                                const productImage = product.product_images?.[0];
+                                const imageUrl = productImage
+                                    ? `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${productImage.bucket_pim}/${productImage.path_pim}`
+                                    : null;
+
+                                return (
+                                    <Pressable
+                                        key={product.id_prd}
+                                        style={styles.productCard}
+                                        onPress={() => {
+                                            setSelectedProduct(product);
+                                            setShowProductModal(true);
+                                        }}
+                                    >
+                                        {imageUrl ? (
+                                            <Image source={{ uri: imageUrl }} style={styles.productImage} />
+                                        ) : (
+                                            <View style={styles.productImagePlaceholder}>
+                                                <Ionicons name="image-outline" size={32} color="#999" />
+                                            </View>
+                                        )}
+                                        <View style={styles.productInfo}>
+                                            <Text style={styles.productName} numberOfLines={2}>
+                                                {product.name_prd}
+                                            </Text>
+                                            {product.description_prd && (
+                                                <Text style={styles.productDescription} numberOfLines={2}>
+                                                    {product.description_prd}
+                                                </Text>
+                                            )}
+                                            <Text style={styles.productPrice}>
+                                                ₡{product.price_prd?.toLocaleString('es-CR') || '0'}
+                                            </Text>
+                                        </View>
+                                    </Pressable>
+                                );
+                            })}
+                        </View>
+                    </View>
+                )}
+
+                {/* CONTACT PANEL */}
+                <View style={styles.contactCard}>
+                    <Text style={styles.contactTitle}>Contacto</Text>
+
+                    {whatsappUrl && (
+                        <Pressable
+                            style={[styles.contactButton, styles.whatsapp]}
+                            onPress={() => openUrl(whatsappUrl)}
+                        >
+                            <Ionicons name="logo-whatsapp" size={18} color="#fff" />
+                            <Text style={styles.contactButtonText}>WhatsApp</Text>
+                        </Pressable>
+                    )}
+
+                    {phoneUrl && (
+                        <Pressable
+                            style={styles.contactButton}
+                            onPress={() => openUrl(phoneUrl)}
+                        >
+                            <Ionicons name="call" size={18} color="#111" />
+                            <Text style={styles.contactButtonDarkText}>Llamar</Text>
+                        </Pressable>
+                    )}
+
+                    {business.website_bus && (
+                        <Pressable
+                            style={styles.contactButton}
+                            onPress={() => openUrl(business.website_bus)}
+                        >
+                            <Ionicons name="link" size={18} color="#111" />
+                            <Text style={styles.contactButtonDarkText}>Sitio web</Text>
+                        </Pressable>
+                    )}
+
+                    {business.contact_email_bus && (
+                        <Pressable
+                            style={styles.contactButton}
+                            onPress={() => openUrl(`mailto:${business.contact_email_bus}`)}
+                        >
+                            <Ionicons name="mail" size={18} color="#111" />
+                            <Text style={styles.contactButtonDarkText}>Email</Text>
+                        </Pressable>
+                    )}
+                </View>
+            </ScrollView>
+
+            {selectedProduct && (
+                <Modal
+                    visible={showProductModal}
+                    transparent
+                    animationType="slide"
+                    onRequestClose={() => setShowProductModal(false)}
+                >
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.modalContent}>
+                            <View style={styles.modalHeader}>
+                                <Text style={styles.modalTitle} numberOfLines={2}>
+                                    {selectedProduct.name_prd}
+                                </Text>
+                                <Pressable onPress={() => setShowProductModal(false)}>
+                                    <Ionicons name="close" size={22} color="#111" />
+                                </Pressable>
+                            </View>
+
+                            <FlatList
+                                data={selectedProduct.product_images || []}
+                                keyExtractor={(item) => item.id_pim}
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                style={styles.modalImageGallery}
+                                renderItem={({ item }) => {
+                                    const imgUri = `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${item.bucket_pim}/${item.path_pim}`;
+                                    return (
+                                        <Image
+                                            source={{ uri: imgUri }}
+                                            style={styles.modalProductImage}
+                                        />
+                                    );
+                                }}
+                                ListEmptyComponent={(
+                                    <View style={styles.modalPlaceholder}>
+                                        <Ionicons name="image-outline" size={32} color="#999" />
+                                        <Text style={styles.modalPlaceholderText}>Sin fotos</Text>
+                                    </View>
+                                )}
+                            />
+
+                            <View style={styles.modalBody}>
+                                <Text style={styles.modalPrice}>
+                                    ₡{selectedProduct.price_prd?.toLocaleString('es-CR') || '0'}
+                                </Text>
+                                {selectedProduct.description_prd ? (
+                                    <Text style={styles.modalDescription}>{selectedProduct.description_prd}</Text>
+                                ) : null}
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+            )}
         </>
     );
 }
@@ -670,7 +670,7 @@ const styles = StyleSheet.create({
     productPrice: {
         fontSize: 16,
         fontWeight: '700',
-        color: '#007AFF',
+        color: '#10b981',
     },
     modalOverlay: {
         flex: 1,

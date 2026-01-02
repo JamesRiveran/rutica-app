@@ -239,7 +239,7 @@ export default function LocationPicker({
 
       {loadingAddress && (
         <View style={styles.loadingAddressBar}>
-          <ActivityIndicator size="small" color="#007AFF" />
+          <ActivityIndicator size="small" color="#10b981" />
           <Text style={styles.loadingAddressText}>
             Obteniendo dirección...
           </Text>
@@ -248,7 +248,7 @@ export default function LocationPicker({
 
       {loading && (
         <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color="#007AFF" />
+          <ActivityIndicator size="large" color="#10b981" />
         </View>
       )}
 
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#10b981',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 6,

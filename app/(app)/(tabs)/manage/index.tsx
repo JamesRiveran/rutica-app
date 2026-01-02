@@ -381,7 +381,7 @@ function ActionButton({
 }) {
     const palette: Record<string, { bg: string; text: string; border: string }> = {
         business: { bg: '#0EA5E9', text: '#fff', border: '#0EA5E9' },
-        product: { bg: '#16A34A', text: '#fff', border: '#16A34A' },
+        product: { bg: '#10b981', text: '#fff', border: '#10b981' },
         promo: { bg: '#F59E0B', text: '#fff', border: '#F59E0B' },
         default: { bg: '#f8fafc', text: '#111827', border: '#e2e8f0' },
     };

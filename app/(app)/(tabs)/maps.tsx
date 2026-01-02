@@ -51,7 +51,7 @@ export default function MapsScreen() {
   if (loading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color="#10b981" />
         <Text style={styles.loadingText}>Obteniendo ubicación...</Text>
       </View>
     );
@@ -102,8 +102,8 @@ export default function MapsScreen() {
         marker.bindPopup('<b>Tu ubicación</b><br>Estás aquí').openPopup();
         
         const circle = L.circle([${location.coords.latitude}, ${location.coords.longitude}], {
-          color: '#007AFF',
-          fillColor: '#007AFF',
+          color: '#10b981',
+          fillColor: '#10b981',
           fillOpacity: 0.2,
           radius: ${location.coords.accuracy || 50}
         }).addTo(map);
@@ -146,7 +146,7 @@ export default function MapsScreen() {
         startInLoadingState={true}
         renderLoading={() => (
           <View style={styles.centerContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
+            <ActivityIndicator size="large" color="#10b981" />
             <Text style={styles.loadingText}>Cargando mapa...</Text>
           </View>
         )}
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   retryButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#10b981',
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,

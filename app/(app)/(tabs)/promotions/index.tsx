@@ -214,7 +214,7 @@ export default function PromotionsScreen() {
     if (loading) {
         return (
             <View style={styles.centered}>
-                <ActivityIndicator size="large" color="#007AFF" />
+                <ActivityIndicator size="large" color="#10b981" />
                 <Text style={styles.helper}>Cargando promociones</Text>
             </View>
         );
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     primaryButton: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#10b981',
         paddingVertical: 12,
         paddingHorizontal: 14,
         borderRadius: 12,

@@ -65,7 +65,7 @@ export default function PromotionDetailScreen() {
                         .select('id_bus, name_bus, description_bus, location_id_bus')
                         .eq('id_bus', promoData.business_id_prm)
                         .single();
-                    
+
                     if (biz && biz.location_id_bus) {
                         const { data: loc } = await supabase
                             .from('locations')
@@ -79,7 +79,7 @@ export default function PromotionDetailScreen() {
                 }
 
                 // Cargar imágenes del negocio
-                let businessImages = [];
+                let businessImages: any[] = [];
                 if (promoData.business_id_prm) {
                     const { data: imgs } = await supabase
                         .from('business_images')
@@ -95,7 +95,7 @@ export default function PromotionDetailScreen() {
                     .select('product_id_ppr')
                     .eq('promotion_id_ppr', id);
 
-                let products = [];
+                let products: any[] = [];
                 if (promoProdLinks && promoProdLinks.length > 0) {
                     const productIds = promoProdLinks.map((link: any) => link.product_id_ppr);
                     const { data: prods } = await supabase
@@ -166,7 +166,7 @@ export default function PromotionDetailScreen() {
     if (loading) {
         return (
             <View style={styles.centered}>
-                <ActivityIndicator size="large" color="#007AFF" />
+                <ActivityIndicator size="large" color="#10b981" />
                 <Text style={styles.helper}>Cargando promoción…</Text>
             </View>
         );
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     backText: {
-        color: '#007AFF',
+        color: '#10b981',
         fontWeight: '700',
     },
     heroWrap: {
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
         marginTop: 2,
     },
     primaryButton: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#10b981',
         paddingVertical: 12,
         paddingHorizontal: 14,
         borderRadius: 12,

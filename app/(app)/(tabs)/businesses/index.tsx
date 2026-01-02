@@ -383,8 +383,8 @@ export default function BusinessesScreen() {
             placeholder="Buscar negocios, productos, atracciones…"
             placeholderTextColor="#9AA0A6"
             style={styles.searchInput}
-            selectionColor="#007AFF"
-            cursorColor="#007AFF"
+            selectionColor="#10b981"
+            cursorColor="#10b981"
             returnKeyType="search"
           />
         </View>
@@ -535,7 +535,7 @@ export default function BusinessesScreen() {
                       style={styles.gridCardItem}
                       onPress={() =>
                         router.push({
-                          pathname: '/(app)/(tabs)/promotion/[id]',
+                          pathname: '/(app)/(tabs)/promotions/[id]',
                           params: { id: promo.id_prm },
                         })
                       }
@@ -734,7 +734,7 @@ export default function BusinessesScreen() {
                       style={styles.gridCardItem}
                       onPress={() =>
                         router.push({
-                          pathname: '/(app)/(tabs)/promotion/[id]',
+                          pathname: '/(app)/(tabs)/promotions/[id]',
                           params: { id: promo.id_prm },
                         })
                       }
@@ -1035,7 +1035,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   myLocationText: {
-    color: '#007AFF',
+    color: '#10b981',
     fontWeight: '700',
   },
   clearButton: {
@@ -1197,7 +1197,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   modalPrimaryBtn: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#10b981',
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: 'center',
@@ -1225,7 +1225,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     alignItems: 'center',
     borderRadius: 8,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#10b981',
   },
   tabInactive: {
     flex: 1,
@@ -1257,7 +1257,7 @@ const styles = StyleSheet.create({
   },
   createButton: {
     padding: 14,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#10b981',
     borderRadius: 10,
     alignItems: 'center',
   },
@@ -1407,6 +1407,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 'auto' as any,
     marginBottom: 8,
   },
+  whatsappButton: {
+    position: 'absolute',
+    bottom: 12,
+    right: 12,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#25D366',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+  },
 });
 
 /* ---------- Location Picker Modal ---------- */
@@ -1443,7 +1455,7 @@ function OptionsModal({
           {options.map((opt) => (
             <Pressable
               key={opt}
-              style={{ padding: 12, borderWidth: 1, borderColor: selected === opt ? '#007AFF' : '#e5e7eb', borderRadius: 8, marginBottom: 8 }}
+              style={{ padding: 12, borderWidth: 1, borderColor: selected === opt ? '#10b981' : '#e5e7eb', borderRadius: 8, marginBottom: 8 }}
               onPress={() => onSelect(opt)}
             >
               <Text style={{ color: '#111', fontWeight: '500' }}>{opt}</Text>
@@ -1452,7 +1464,7 @@ function OptionsModal({
         </ScrollView>
 
         <Pressable
-          style={{ marginTop: 12, backgroundColor: '#007AFF', padding: 12, borderRadius: 8, alignItems: 'center' }}
+          style={{ marginTop: 12, backgroundColor: '#10b981', padding: 12, borderRadius: 8, alignItems: 'center' }}
           onPress={onClose}
         >
           <Text style={{ color: '#fff', fontWeight: '600' }}>Cerrar</Text>

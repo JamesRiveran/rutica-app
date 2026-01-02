@@ -191,7 +191,7 @@ export default function ManageBusinessDetailScreen() {
                         style={styles.addButton}
                         onPress={() =>
                             router.push({
-                                pathname: '/(app)/(tabs)/businesses/products/create',
+                                pathname: '/(app)/(tabs)/products/create_new',
                                 params: { businessId: id },
                             })
                         }
@@ -228,7 +228,7 @@ export default function ManageBusinessDetailScreen() {
                                         </Text>
                                     </View>
                                     <Pressable style={styles.editButton}>
-                                        <Ionicons name="pencil" size={18} color="#007AFF" />
+                                        <Ionicons name="pencil" size={18} color="#10b981" />
                                     </Pressable>
                                 </View>
                             );
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
         color: '#111',
     },
     addButton: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#10b981',
         paddingVertical: 6,
         paddingHorizontal: 10,
         borderRadius: 8,

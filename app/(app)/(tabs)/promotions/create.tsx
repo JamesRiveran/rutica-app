@@ -485,8 +485,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     stepCircleActive: {
-        backgroundColor: '#16A34A',
-        borderColor: '#16A34A',
+        backgroundColor: '#10b981',
+        borderColor: '#10b981',
     },
     stepText: {
         color: '#6b7280',
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
     cardActive: {
         flexBasis: '48%',
         borderWidth: 1,
-        borderColor: '#16A34A',
+        borderColor: '#10b981',
         borderRadius: 12,
         padding: 14,
         backgroundColor: '#ECFDF3',
@@ -578,7 +578,7 @@ const styles = StyleSheet.create({
     listItemActive: {
         padding: 12,
         borderWidth: 1,
-        borderColor: '#16A34A',
+        borderColor: '#10b981',
         borderRadius: 10,
         backgroundColor: '#ECFDF3',
         marginBottom: 8,

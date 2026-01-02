@@ -70,7 +70,7 @@ export default function ProductCreateScreen() {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsMultiple: true,
+                selectionLimit: 0,
                 aspect: [1, 1],
                 quality: 0.8,
             });
@@ -79,7 +79,7 @@ export default function ProductCreateScreen() {
                 const newImages = result.assets.map((asset) => ({
                     uri: asset.uri,
                     type: 'image/jpeg',
-                    name: asset.filename || `product-${Date.now()}.jpg`,
+                    name: asset.fileName || `product-${Date.now()}.jpg`,
                 }));
                 setSelectedImages([...selectedImages, ...newImages]);
             }
@@ -278,7 +278,7 @@ export default function ProductCreateScreen() {
             <View style={styles.card}>
                 <Text style={styles.label}>Imágenes del producto</Text>
                 <Pressable style={styles.uploadButton} onPress={pickImages}>
-                    <Ionicons name="cloud-upload-outline" size={24} color="#007AFF" />
+                    <Ionicons name="cloud-upload-outline" size={24} color="#10b981" />
                     <Text style={styles.uploadButtonText}>
                         Seleccionar imágenes ({selectedImages.length})
                     </Text>
@@ -479,8 +479,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     stepCircleActive: {
-        backgroundColor: '#16A34A',
-        borderColor: '#16A34A',
+        backgroundColor: '#10b981',
+        borderColor: '#10b981',
     },
     stepText: {
         color: '#6b7280',
@@ -530,7 +530,7 @@ const styles = StyleSheet.create({
     bizActive: {
         padding: 12,
         borderWidth: 1,
-        borderColor: '#16A34A',
+        borderColor: '#10b981',
         borderRadius: 10,
         backgroundColor: '#ECFDF3',
         marginBottom: 8,
@@ -594,7 +594,7 @@ const styles = StyleSheet.create({
     uploadButton: {
         borderWidth: 2,
         borderStyle: 'dashed',
-        borderColor: '#007AFF',
+        borderColor: '#10b981',
         borderRadius: 10,
         padding: 20,
         alignItems: 'center',
@@ -602,7 +602,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     uploadButtonText: {
-        color: '#007AFF',
+        color: '#10b981',
         fontWeight: '600',
         marginTop: 8,
     },

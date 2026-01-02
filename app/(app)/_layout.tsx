@@ -36,7 +36,7 @@ export default function AppLayout() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color="#10b981" />
         <Text style={styles.loadingText}>Cargando...</Text>
       </View>
     );
